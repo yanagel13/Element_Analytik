@@ -1,0 +1,964 @@
+% nome del file: Moto.tex
+% sistema operativo: MacOS 10.9.1 (64bit)
+
+\documentclass[a4paper,twoside,12pt]{article}
+
+
+% Package per la lingua e la codifica dei caratteri
+\usepackage[utf8]{inputenc}  % Uso dell'insieme di caratteri "unicode" (UTF8)
+\usepackage[T1]{fontenc}  % Uso della codifica EC: T1 = insieme dei caratteri estesi
+\usepackage[italian,ngerman]{babel}  % Uso della lingua italiana
+\usepackage{textcomp}
+\setcounter{secnumdepth}{3} % Numerano anche subsubsection. Mettere
+\setcounter{tocdepth}{3}         % 4 al posto di 3 per numerare anche i paragrafi.
+\usepackage{fixltx2e} % per \textsubscript ....
+
+%CHIMICA
+
+\usepackage{xymtex}
+\usepackage{ gensymb } 
+
+%MATEMATICA
+\usepackage{amsmath}
+\newcommand*\rfrac[2]{{}^{#1}\!/_{#2}}
+
+% WEB
+
+\usepackage{hyperref}
+\usepackage{indentfirst}  %Rientra l'inizio del primo capoverso
+
+% Titoli
+\usepackage[sf,sc]{titlesec}
+
+
+
+
+% Tabelle e figure
+\usepackage{float}     % Opzione [H] per le figure e le tabelle
+\usepackage{array}    % Comandi per gestire meglio l'ambiente array
+\usepackage{booktabs}  % Comandi per gestire megliol'ambiente tabular
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{tablefootnote}
+\usepackage{tabu}
+\usepackage{caption}
+\usepackage{subfig}
+\usepackage{tikz} 
+\usetikzlibrary{calc,trees,positioning,arrows,chains,shapes.geometric,%
+    decorations.pathreplacing,decorations.pathmorphing,shapes,%
+    matrix,shapes.symbols}
+
+\tikzset{
+>=stealth',
+  punktchain/.style={
+    rectangle, 
+    rounded corners, 
+    % fill=black!10,
+    draw=black, very thick,
+    text width=10em, 
+    minimum height=3em, 
+    text centered, 
+    on chain},
+  line/.style={draw, thick, <-},
+  element/.style={
+    tape,
+    top color=white,
+    bottom color=blue!50!black!60!,
+    minimum width=8em,
+    draw=blue!40!black!90, very thick,
+    text width=10em, 
+    minimum height=3.5em, 
+    text centered, 
+    on chain},
+  every join/.style={->, thick,shorten >=1pt},
+  decoration={brace},
+  tuborg/.style={decorate},
+  tubnode/.style={midway, right=2pt},
+}
+\newcolumntype{b}{X}
+\newcolumntype{s}{>{\hsize=.5\hsize}X}
+
+% Didascalie
+\usepackage[width=.90\textwidth,textfont={footnotesize,sf},labelfont={small,sc,sf},labelsep=endash]{caption}
+
+% Pacchetti per la grafica
+\usepackage{graphicx}  % Comandi per la gestione dei grafici
+
+
+%Definizione delle Righe
+
+\makeatletter
+  \def\vhrulefill#1{\leavevmode\leaders\hrule\@height#1\hfill \kern\z@}
+\makeatother
+
+% Intestazioni e piè di pagina
+\usepackage{fancyhdr} 
+\usepackage{vmargin}
+\frenchspacing  % Rende uguali tutti gli spazi dopo i segni di interpunzione
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\section{Einführung}
+Generell lässt sich jede analytische Methode mit dem folgenden Schema charatkerisieren:\\
+
+\begin{figure}[h]
+\begin{tikzpicture}
+  [node distance=.8cm,
+  start chain=going right,]
+     \node[punktchain, join] {Provokation};
+     \node[punktchain, join]  {Reaktion};
+     \node[punktchain, join] {Detektion};
+\end{tikzpicture}	
+\caption{Grundschema analytischer Mehoden}
+\end{figure}
+Eine Probe wird durch Zufuhr von Energie in verschiedenen Formen (bspw. Licht- oder Teilchenstrahl) angeregt. Es wird dann detektiert wie die Probe mit der zugeführten Energie wechselwirkt.\\ [0.5cm]
+Es gibt zwei Arten von Methoden:
+\begin{itemize}
+\item \emph{Emissionsmethoden}:  messen der Aussendung von Strahlungen
+\item \emph{Absorptionsmethoden}: messen der Abnahme von Strahlung \\[0.5cm]
+\end{itemize} 
+Es werden folgende Provokation- und Detektionsmethoden behandelt:
+\begin{itemize}
+\item Atomabsorptionsspektroskopie (AAS)
+\item Optische Emissionspektroskopie mit induktiv gekoppelten Plasma (ICP-OES)
+\item Massenspektropie mit induktiv gekoppelten Plasma (ICPMS)*
+\item Röntgenfluoreszenz (XRF)*
+\end{itemize}
+
+\newpage
+\section{Grundlagen}
+\subsection{Abaluf einer chemischen Analyse}
+Analystenstrategie:
+
+\begin{figure}[h]
+\begin{tikzpicture}
+  [node distance=.8cm,
+  start chain=going right,]
+     \node[punktchain, join, dashed] (Fragestellung) {FRAGESTELLUNG};
+     \node[punktchain, join] (Untersuchung)  {Untersuchungsobjekt};
+     \node[punktchain, join] (Räpresentative) {Räpresentative Probenannahme};
+     \node[punktchain, join, below=0.8  of Räpresentative] (Probenvorbereitung) {Probenvorbereitung};
+     \node[punktchain, join, left=of Probenvorbereitung] (Analytische) {Analytische Probe};
+     \node[punktchain, join, below=0.8 of Analytische] (Probeneinführung) {Probeneinführung};
+     \node[punktchain, join, text width=2.5cm, below=1 of Probeneinführung] (Provokation)
+      {\textbf {Provokation} };
+      \node [punktchain, join, text width=2.5cm, right=0.4 of Provokation] (Reaktion) {\textbf{Reaktion} };
+      \node [punktchain, join, text width=2.5cm, right=0.4 of Reaktion] (Detektion) {\textbf {Detektion} };
+      \node[punktchain, join, below=5.0 of Probenvorbereitung] (Datenauswertung) {Datenauswertung};
+      \node [punktchain, join, left= of Datenauswertung] (Resultat) {Resultat};
+      \node[punktchain, join, below= of Resultat] (Interpretation) {Interpretation};
+      \node[punktchain, join, dashed, left= of Interpretation] (Antwort) {ANTWORT};
+      \node[punktchain, dashed, below= of Antwort] (Massnahme) {MASSNAHME};
+      
+      	\draw[->,dashed,shorten >=8pt,shorten <=1pt] ([yshift=1.5ex]Fragestellung) -- ([yshift=1.5ex]Antwort);
+	\draw[->,,dashed,shorten >=1pt,shorten <=8pt] ([yshift=-1.5ex]Antwort) -- ([yshift=-1.5ex]Massnahme);
+\end{tikzpicture}	
+\caption{Analysenschema einer analytischen Fragestellung}
+\end{figure}
+
+\subsection{Probenahme}
+4 Teilschritte:
+\begin{enumerate}
+\item \emph{Planung}: Untersuchungsziele, Probenumfang, Methodenauswahl
+\item \emph{Vorbereitungsphase}: logistiche un technische Hilfsmittel vorbereiten
+\item \emph{Probenahme}: systematische oder zufällige Wahl der Probenahmstellen
+\item \emph{Probenlagerung}: Ort, Zeit, Temperatur (Bsp. wassrige Rpben werden leicht angesäuert um Sorption von Kationen an Gefässwenden zu vermeiden)
+\item \emph{repräsentative Probenahme}: Grundgesamtheit der Probe wiederspiegeln\\[0.5cm]
+\end{enumerate}
+ 
+ Generell ist eine genaue Dokumentation und Beschriftung der Probennahme wichtig, um mögliche Verunreinigungen oder Veränderungen der Probe zu erklären.
+
+\subsubsection{Probenahmemuster}
+Je nach Fragestellung ist eine verschiedene Beprobung nötig. Bei Flächen wählt man ein Raster, bei kontinuirliche Ströme wählt man Durchflussmethoden.\\
+
+\textbf{Probennahmeraster}
+Man kann 3 verschieden Situationen unterscheiden die jeweils verschiedene Probenraster erfordern:
+\begin{itemize}
+\item unregelmässige kontamination $ \Rightarrow $ systematisches Raster
+\item regelmässiges kontamination $ \Rightarrow $ nicht regelmässige Beprobungsraster ( X- oder W- Form)
+\item lokaler Emittent (Bsp. im Boden auflösende Autobatterie) $ \Rightarrow $ polarer oder Kreisförmiger Raser
+\end{itemize}
+
+\textbf{Durchflussbeprobung}
+Durch Zeitproportionale Probennahme wird eine bestimmte Menge an Probe im immer gleichen Zeitintervall entnommen. Bleibt die Zeit gleich und ändert sich die Probenmenge spricht man von \emph{durchflussproportionaler Probennahme}. Ist sie jedoch emph{volumentproportional} bestimmt die Durchflussmenge, wann die Probe entnommen wird.\\[0.5cm]
+
+\textbf{Feststoffbeprobung}
+Die \emph{Grundgesamtheit} einer festen Probe wird von Sedimente, Schlamm, Abfall oder Müll dargestell. Es müssen n Einzelproben genommen werden die die \emph{Roh, Misch- oder Gesamtprobe} darstellen. Die eigentlichen Analyseproben werden durch \emph{Verjüngen} - Mahlen, Sieben, Teilen - von Teilproben erhalten. Das Zerkleinern erfolgt Schritt für Schritt dank Hammern, Diamantmörsern und zum schluss durch Achatmörsern.
+
+%\subsubsection{Probenmenge}
+
+\subsection{Probenvorbereitung}
+Die Proben müssen in eine \textbf{Form} überfürt werden in der sie analysiert werden können. Flüssige Proben sind meistensam besten analysierbar. Man muss die Anforderungen des Geräts beachten.\\
+$ \Rightarrow $ \textbf{Konzentration} der Lösung muss stimmen (nicht zu hoch noch zu tief) .
+
+\subsubsection{Flüssige Proben}
+Flüssige Proben sind Flüssigkeiten mit änlicher Viskosität wie Wasser gemeint. Flüssige Proben sind bereits im richtigen Agregatzustand für AAS, ICP-OES und ICP-MS.
+Es werden folgender Schritte durchgeführt:
+\begin{enumerate}
+\item \textbf{Ansäuern}: Um die Analyten in der Lösung zu halten müssen diese Stabilisiert werden. In den meisten fällen wird der pH unter 1 mit $ HNO_3 $ abgesenkt. Bestimmte Elementionen (z.B. Au, Hg) müssen mit bestimmte Liganden Komplexiert werden (z.B. durch Cl)
+\item  \textbf{Verdünnen}: Abhängig von der Probenmatrix müssen die Proben verdünnt werden. Reicht das verdünnen nicht, um Matrixeffekte zu eliminieren, können die Lösungen "Matrixangepasst werden (gleiche reine Matrix zugegeben). Alternativ kann die Konzentration durch Standardaddition bestimmt werden
+\end{enumerate}
+
+\subsubsection{Feste und hochvisköse Proben}
+Feste und hochvisköse Flüssigkeiten (z.B. Öle oder flüssige Proben mit Feststoffanteil auch \emph{Slurries} gennant) müssen aufgeschlossen werden. Dies geschiet dank bestimmter Säuren (siehe Tabelle) und das folgen dieser Schritte:
+\begin{enumerate}
+\item Probenvorbereitung: z.B. getrocknet und mechanisch zerkleinert
+\item Proben einwaage
+\item Zugabe eines \emph{Spike}: zugabe einer bekannnten Menge eines nichtvorkommendes bekanntes Element, zur überprüfung ob das gesamte aufeschlossene Material der Messung zugeführt wird.
+\item Verdünnungsfaktor bestimmen
+\end{enumerate}
+$ \rightarrow $ Für die Auswahl des Säuregemisches, des Spikes und der Menge der Probe, die ausgeschlossen wird, gibt es kein Patentrezept.\\ [0.3cm]
+
+Die Probe kann in zwei verschiedene Arten aufgeschlossen werden:
+\begin{itemize}
+\item \textbf{offener Aufschluss}: Probe reagiert mit den säuren im offenen Probengefäss, anschliessend wird sie erhitzt. Geeignet für Proben die nicht leicht flüchtig sing.
+\item \textbf{geschlossener Aufschluss}: hauptsächlich in \emph{Mikrowellenaufschluss-Geräte} die unter grossem Druck (bis zu 200 bar) und hohe Temperaturen (bis zu 300 \celsius) arbeiten können. Bis zu 40 Proben gleichzeitig. Probengefässe aus Teflon, PFA oder hochreine Quarzgefässe (für hohe Temp.)\\[0.3cm]
+\end{itemize}
+
+\textbf{Verunreinigungen}: Zu beachten ist, dass eine Probe bei jedem Aufschluss auch verunreinigt werden kann; einer seits durch Störionen, anderseits durch Verunreinigung der verwendeten Reagenzien und Gefässe.\\
+$ \Rightarrow $  sehr reine Säuren und sehr saubere Gefässe.\\
+
+\textbf{Verdünnen}: durch Auflschluss wird die Konzentration der Analyten kleiner. Dies ist eigentlich kein Problem, man muss trotzdem beachten das die Konzentration nicht zu klein wird (insbesonder für die Ultra-Spurenanalytik).\\
+
+\textbf{Zeitaufwand}: Ist nicht zu unterschätzen, ein Aufschluss von 100 Proben nimmt meistens einen ganzen Tag ein.
+
+\subsection{Quantitative analyse}
+
+\begin{center}
+\emph{"Welcome to the world of quantitative chemical analysis. May your delight be boundless"}\\
+\end{center}
+
+\subsubsection{Quantitative Angaben}
+\begin{itemize}
+\item Konzentrationsangabe  $ [\rfrac{mol}{L}], [\rfrac{g}{L}], [\rfrac{g}{kg}], [\rfrac{mg}{g}]$; 
+\item Massenkonzentration als dimensionslose Grösse:
+	\begin{itemize}
+	\item \textdiscount = $ 10^{-2}  \rfrac{g}{g} $
+	\item $ ppm = 108^{-6}  \rfrac{g}{g} $
+	\item $ ppb = 10^{-9}  \rfrac{g}{g} $
+	\item $ ppt = 10^{-12}  \rfrac{g}{g}  $
+	\item $ ppq = 10^{-15}  \rfrac{g}{g}  $
+	\end{itemize}
+\item Teilchenkonzetrationen:
+	\begin{itemize}
+	\item Hauptbestandteile 1-100 \textdiscount  $\rightarrow$ (1000ppm < )
+	\item Nebenbestanteile 0.001 - 1 \textdiscount $\rightarrow$ ( 10 ppm - 1000 ppm)
+	\item Spurenbestandteile < 0.001 \textdiscount  $\rightarrow$ (< 10 ppm)
+		\begin{itemize}
+		\item Spurenelemente
+		\item Ultraspurenelemente
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+
+\subsubsection{Quantifizierungsmethoden}
+
+\textbf{Klassische nasschemische Verfahren}: Gravimetrie (Gewichtsanalyse)und Titration (Massanalyse). Beide sind absolute Messmethoden, damit ergibt sich die Konzentration oder Menge der untersuchten Substanz.\\
+
+\textbf{Instrumentelle Verfahren}: Setzen sich aus den Trennmethoden, den optischen Methoden und den elektroanalytischen Methoden zusammen. Trennmethoden (Chromatographie) werden jeweils mit Detektionsmethoden gekoppelt. Optische Methoden (Emission / Absorption) können Spektroskopisch (qualitativ) oder Spektronometrisch (quantitativ) sein. Dabei wird zwischen atom spektroskopische (z.B. OES, AAS, RFA, ICP-MS) und molekülspektroskopische Verfahren (z.B. IR, MS, NMR) unterscheiden. Bei den elektroanalytischen Methoden wie Polarographie, Voltametrie, Amperometrie und Potentiometrie wird die anregung mit elektrischen Strom erreicht und die Reaktion des System meist auch darüber kalibrieren.
+
+\subsubsection{Kalibrierung}
+Um ein gemessenes Signal einer Konzentration zuweisen zu können, ist es bei \emph{Relativverfahren} notwendig, die jeweilige Methode zu kalibrieren.\\
+
+\textbf{Kalibriergerade}
+\begin{center}
+$ I = f(c) $\\
+\end{center}
+\emph{I  = Intensität} \\
+$ f = Funktion $\\
+$ c = Konzentration $\\[0.3cm]
+Mit Kalibrationslösungen (versch. Konz. als Probe) und ein Graphik $I$ vs $c$ hergesellt und damit $f(c)$ bestimmt. \\
+$ \rightarrow $ Erwartete Konz. der Analyten muss innerhalb des Kalibrationsbereiches liegen. \\
+$ \rightarrow $ Is die Abhängigkeit linear dan beschreibt die Steigung der Kalibriergerade die Empfindlichkeit.\\
+
+\textbf{Empfindlichkeit (E)}
+\begin{center}
+$ E= \frac{I}{c} $
+\end{center}
+Oft mis S bezeichnet (engl. sensitivity)\\[0.3cm]
+\textbf{Korrekturen}
+\begin{itemize}
+\item \emph{Untergrundkorrektur}: der Signaluntergrund muss bestimmt und abgezogen werden
+\item \emph{Externer Standard}: Durch Analyse eines externen Standard vor, nach und wahlweise zwischen den Probenmessungen, kann eine sich veränderte Empfindlichkeit des Geräts festgestellt und korrigiert werden.\\
+$ \rightarrow $Feststoff Analysen
+
+\item \emph{Interner Standard}: Es wird sowohl Proben sowie Kalibrierstandards eine Substanz mit änlichen physiokemischen Eigenschaften wie der Analyt in immer gleicher Konzentration zugegeben. Seine Intensität gibt Auskunft über die relative Stärke der Signalantwort einer Messung. Dabei gilt:
+\begin{center}
+$ \frac{E_{sample}(IS)}{E_{sample}(A)}=\frac{E_{standard}(IS)}{E_{standard}(A)} $\\[0.5cm]
+
+ $ \Rightarrow c_{sample}(A) = I_{sample}(A) \cdot \frac{c_{sample}(IS)}{I_{sample}(IS)} \cdot \frac{I_{standard}(IS)}{c_{standard}(IS)} \cdot \frac{c_{standard}(A)}{I_{standard}(A)} $
+\end{center}
+\item \emph{Wichtig}: 
+	\begin{itemize} 
+	\item gleiche Matrix für Kalibrationsstandard und Probe
+	\item Untergrundkorrektur durch abziehen des Blidwerts(Signal der Kalibrierlösung ohne Analyt 			und Probenmatrix) oder des Leerwertes(Signal der ganzen Probenlösung ohne 					zugegebenen Analyt/Standard)
+	\item Abdeckung gesamten Analytbereich durch Kalibrationskurve
+	\item interner Standard und Analyt müssen änliche Eigenschaften haben (z.B. Nachbarn im 				Periodensystem) aber nicht miteinander interferieren\\
+	\end{itemize}
+\end{itemize}
+
+\textbf{Standardaddition}\\
+Alternativ zur extern besimmten Kalibrierkurve kann Standardaddition verwendet werden. Dazu wird einer immer gleichen Menge an Probenlösung der Analyt in genau bekannter, zunehmender Menge zugesetzt und jedesmal mit dem Lösungsmittel auf das gleiche Volumen aufgefüllt. Man macht dann die folgender Schritte um die Konzentration des Analyten zu bestimmen:
+\begin{enumerate}
+\item Graphik erstellen: Intensitöt gegen die Konzentration des zugegebenen Analyten
+\item I\textsubscript{0} = Signal des Analyten
+\item negative x-Achsenabschnitt = betrag tatsächlichen Analytenkonzentration in der Probe
+\item $ c_{Analyt}=\frac{I_0}{E} $ \\[0.5cm]
+\end{enumerate}
+
+\subsection{Statistik}
+Um eine richtige antwort zur analytischen Fragestellung zu geben, ist es wichtig die Signifikanz der gefundenen Konzentrationen an zu geben.
+\subsubsection{Unsicherheit}
+Die unsicherheit oder Abweichung des Resultats lässt sich erst bestimmen wenn der Wert mehrmals bestimmt wurde.\\
+\textbf{Mittelwert}
+\begin{center}
+$ \bar{x} = \sum \frac{x_i}{n} $\\
+\end{center}
+\textbf{Normal- oder Gaussverteilung}
+\begin{center}
+$ y = \frac{1}{\sigma \cdot \sqrt{2\pi}} \cdot e^{-\frac{1}{2}(\frac{x-\mu}{\sigma})^2}$\\
+\end{center}
+\textbf{Standardabweichung $\sigma$ }
+\begin{center}
+$ s = \sqrt{\frac{\sum(x_i-\bar{x})^2}{n-1}} $\\
+\end{center}
+
+
+\subsubsection{Präzision, Richtigkeit, Genauigkeit}
+\textbf{Präzision}: Ausmass der Übereinstimmung (durch s quantifiziert) des Ergebniss bei wiederholter  Anwendung einer Analysenmethode.\\[0.3cm]
+\textbf{Richtigkeit}: Mass dafür, in wiefern der Mittelwert der Messung dem wahren Wert entschpricht\\[0.3cm]
+\textbf{Genauigkeit}: gibt die Kombination aus Richtigkeit und Reproduzierbarkeit\\[0.3cm]
+
+\subsubsection{Nachweis- und Bestimmungsgrenze}
+Wie tief die Konzentrationen sein dürfen, die sich noch erfassen oder signifikant messen lassen, ist durch Empfindlichkeit E und den Rauschpegel des Gerätes Bestimmt. \\
+\textbf{Nachweisgrenze}
+\begin{center}
+$c_{NWG}=3 \cdot \sigma_U + \bar{x}_U$ oder $ c_{NWG}=\frac{3 \cdot \sigma_U}{E}$ \\
+\end{center}
+\textbf{Bestimmungsgrenze}
+\begin{center}
+$c_{B}=6 \cdot \sigma_U + \bar{x}_U$ oder $ c_{B}=\frac{10 \cdot \sigma_U}{E}$ \\
+\end{center}
+Wobei $\bar{x}_U$ der Mittelwert und $\sigma_U$ die Streuung des Leerwertes sind.
+
+\subsubsection{Fehlerfortpflanzung}
+im Fehler muss auch Ungenauigkeit beim Wägen und Abfüllen der Substanzen, Unsicherheit der Kalibration, der Leerbestimmung und Vertrauensintervall der der verwendeten Standards betrachtet werden.\\
+
+\subsubsection{Validierung}
+Um die Verlässlichkeit der gemessenen Werte zu überprüfen, stehen grundsätzlich drei Ansätze zu Verfügung, die auch als Kombination angewandt werden können:\\
+
+\textbf{Referenzmatrialien}: Verwendung von zertifizierten Referenzmaterialien. Im gegensatz zu reinen Substanzen, werden hier Materialien benützt deren Zusammensetzung derjenigen der Probe so weit wie möglich entspricht und in denen due Konzentration der interessierenden Elemente zuverlässig bestimmt worden ist.\\[0.3cm]
+
+\textbf{Vergleich mit anderen Methoden}: Verwendung einer zusätzlichen Analysemethode zur Konzentrationsbestimmung. Dabei darf die Vergleichsmethode keinesfalls den gleichen Fehlern unterliegen wie die ursprüngliche. (Bsp. ICPMS - XRF)\\[0.3cm]
+
+\textbf{Wiederholbarkeit}: Verschiedene Laboratorien wiederholen die Messungen.
+
+%%%%%ATOMABSORPTIONSSPEKTRONOMIE%%%%
+\newpage
+\section{Atomabsorptionsspektroskopie (AAS)}
+
+\begin{figure}[h]
+\begin{tikzpicture}
+  [node distance=.8cm,
+  start chain=going right,
+  comment/.style={rectangle, inner sep= 5pt, text width=4cm, node distance=0.25cm, font=\footnotesize}]
+     \node[punktchain, join] (Provokation){Provokation};
+     \node[punktchain, join] (Reaktion) {Reaktion};
+     \node[punktchain, join] (Detektion) {Detektion};
+     %%%
+     \node[comment, below= of Provokation] {Bestrahlung freier Atome mit elementspezifischer		elektromagnetischer Strahlung};
+     \node[comment, below= of Reaktion] {Üebergang der Atome und Ionen in den angeregten Zustand unter Absorption der eingestrahlten Strahlung};
+     \node[comment, below= of Detektion] {Extinktion der eingestrahlten elektromagnetischen Strahlung auf elementspezifischen Wellenlängen};    
+\end{tikzpicture}	
+\caption{Grundschema der AAS}
+\end{figure}
+Die Methode bedient sich der Messung einer Absorption optischer Strahlung durch Atome im Grundzustand. Dazu wird die Probe thermisch in Flammen oder beim Aufheizen in einem Graphitrohr atomisiert. Der Grad der Absorption der eingestrahlten elektromagnetischen Strahlung in Relation zur Konzentration erlaubt das Bestimmen des Elementgehaltes in der Probe. Mit der AAS lassen sich alle Elemente mit Resonanlinien im Bereich von 180 - 900 nm bestimmen, also Metalle, Halbmetalle sowie einige Nichtmetalle. Es lassen sich bis zu 60 Elemente mit Nachweisgrenze bis zum ppt Bereich nachweisen. Die verwendung von Einzelelementlapen macht die AAS zur klassischen Einzelelementmethode.
+\subsection{Geschichte}
+Joseph von Frauenhopher erkannte 570 Absorptionslinien des Sonnenspektrum, wobei jede Linie  einer anderen Wellenlänge entspricht. 
+Gustav Robert Kirchhoff und Robert Bunsen entdeckten, dass verschiedene chemische Elemente in einem Gasbrenner unterschiedliche Flammenfärbungen verursachen. Daraus folgernten sie:
+\begin{itemize}
+\item Linien werden nur von freien Atome verursacht
+\item Linen sind für eine Atomart charakteristisch
+\item das Gesetz der Gleichartigkeit von Absorption und Farbe
+\end{itemize}
+
+\subsection{Funktionsprinzipien und physikalische Grundlagen der AAS}
+Die beobachtbaren charakteristischen Wellenlängen eines Elementes, entsprechen Energieunterschiede zwischen zwei energetische Zustände.
+\begin{center}
+$ \Delta E = | E_1-E_2 | = h \cdot \frac{c}{\lambda} $
+\end{center}
+$\lambda$= Wellenlänge\\
+$h$= Plank'sche Wirkungsquantum (6.626 $\cdot 10^{-34}$ J s) \\
+$c$= Lichtgeschwindigkeit\\[0.3cm]
+
+Die Population der einzelnen Energieniveaus wird von der \textbf{Boltzmann-Verteilung} beschrieben:
+\begin{center}
+$ \frac{N_i}{N}=\frac{g_i}{Z(T)} \cdot e^{-\frac{E_i}{k_B \cdot T}} $
+\end{center}
+$T$= Temperatur\\
+$N_i$= Anzahl Teilchen im Zustand $i$\\
+$N$= Gesamtzahl Teilchen\\
+$g_i$=Entartung\\
+$Z(T)$= Zustandsfunktion\\
+$k_B$=Boltzmannkonstante\\[0.3cm]
+
+Es können 3 verschiedene Arten von Spektren beobachtet werden: Kontinua, Banden oder -Linienspektren. Die AAS befasst sich hauptsächlich mit Linienspektren. Die Peakintensität entprich der Abschwächung des eingestrahlten Lichtes und kann zur Quantifizierung heran gezogen werden. Diese Abschwächung wird vom \textbf{Lambert-Beer'sche Gesetz} beschrieben:
+\begin{center}
+$ E= -log\frac{\phi_a(\lambda)}{\phi_e(\lambda)}=0.434 \cdot \kappa(\lambda)\cdot l \cdot n_a$
+\end{center}
+$E$= Extintion\\
+$\phi_a$, $\phi_e$= austretende und eintretende Strahlungsleistung\\
+$\kappa$= spektralen Atomabsorptionskoeffizient\\
+$l$= Flammen- oder Graphitrohrlänge in [cm]\\
+$n_a$= Teilchendichte der freien Atome\\[0.3cm]
+Zusammenhang zwischen Extinktion und Analytenkonzentration $c_A$ im linearen Bereich der Kalibration:
+\begin{center}
+$E=S \cdot c_A$
+\end{center}
+$S$= Empfindlichkeit\\
+
+\subsection{Aufbau}
+\begin{enumerate}
+\item Ueberführung der Elemente mit einer Atomisatorisierungseinrichtung (Flamme, Graphitrohr) in freie Atome
+\item Anregung durch Licht elementspezifischer Wellenlänge UV/VIS- Bereich mit einer Hohlkathodenlampe
+\item Ausblendung störender Strahlung mit einem Monochromator
+\item Detektion der Strahlung über Photomultiplier
+\end{enumerate}
+
+\subsubsection{Lichtquellen}
+Die Selektivität der AAS resultiert daraus, dass das eingestrahlte Licht elementspezifisch absorbiert wird. Die Breite der Atomlinien ist $ 10^{-5}$ nm (aus Unschärferelation). Aufgrund des \textbf{Dopplereffekt}:
+\begin{center}
+$ \Delta \lambda = \frac{2 \cdot \lambda}{c} \cdot \sqrt{\frac{2 \cdot k \cdot T}{M} \cdot ln(2)} $
+\end{center}
+$\Delta \lambda$ = Dopplerverbreitung\\
+$ M $ = Atommasse\\
+und der Druck- oder Stossverbreitung ist die \textbf{effektive Atomlinienbreite} von $ 10^{-3} - 10^{-2} $ nm. \\
+$ \rightarrow $ Für selektive Messung muss die Linienbreite des eingestrahlten Lichtes deshalb entweder in der Grössenordnung der gemessenen Atomlinien liegen oder die Auflösung des Spektrometers gut genug sein, um einen wenigen ppm breiten Spektralbereich herauszufiltern und zu detektieren.\\[0.3cm]
+\textbf{Hohlkathodenlampe(HKL/HCL)}:\\[0.3cm]
+Besteht aus einer Anode und einer Kathode in einem gasgefüllten (Ar oder Ne) Glaszylinder mit einem Quarzfenster. Die zylindrische Kathode besteht aus den zu analysierenden Elementen (bis zu 3 Elemente, wenn die Emissionsspektren nicht überlappen). Das Füllgas wird durch eine Gasentladung unter vermindertem Druck ionisiert und zwischen Anode und Kathode beschleunigt. Der Beschuss mit Argonkationen atomisiert das Kathodenmaterial und ergibt somit die gewünschte Strahlung. Da dieser Vorgang bei tieferen Temperaturen als in der Flamme stattfindet sind die resultierende Linienbreiten des resultierenden Emissionsspektrums schmaler als das Absorptionsprofil des Analyten. Um eine maximale Absorption zu erreichen, sollten die Wellenlängen der eingestrahlten Photonen alle auf dem Maximum des Absorptionsprofiles liegen.\\
+Empfindlichkeitsverlust Aufgrund von Linienverbreiterung und  Selbstabsorption (Absorption des emittierten Lichtes und Linienverbreiterung (Lampenströmabhängig)\\[0.2cm]
+
+\textbf{Elektrodenlose Entladungslampe (EDL)}:\\[0.3cm]
+ Quarzrohr an beiden Enden abgeschmolzen wo sich geringste Mengen des interessierenden Elements unter einem Argondruck von wenigen Millibar befinden, und angeregt werden (durch Hochfrequenzgenerator, Leistung von 3-100 W.\\
+ \begin{itemize}
+\item \emph{Vorteile}:
+	\begin{itemize} 
+	\item Hohe Strahlungsintensität
+	\item geringe Linienbreite
+	\end{itemize}
+\item \emph{Anwendungen}: 
+	\begin{itemize}
+	\item {Elemente mit Atomlinien in UV - Bereich (As,Se)} 
+	\item Analyse leichtflüchtiger Elemente (P,Rb,Cs)
+	\end{itemize}
+\end{itemize}
+
+\textbf{Kontinuumstrahler}:\\[0.3cm]
+Strahlungsquellen wie Wasserstoff oder Deuteriumlampen, Halogen oder Xenon-Hochdruclampen senden ein kontinurliches Spektrum aus.
+\begin{itemize}
+\item \emph{Anwendungen}
+	\begin{itemize}
+	\item  Deuteriumlampe zur Untergrundkompensation (siehe 3.4.1)
+	\item Xenon-Kurzbogenlampen als Anregunsquelle bei der hochauflösende kontinuumstrahler –AAS (HR-CD-AAS)
+	\end{itemize}
+\end{itemize}
+
+ \subsubsection{Atomisierung: Flamme und Graphitrohr}
+Atome müssen zur Anregung durch elektromagnetische Strahlung in Freier Form vorliegen. Dies wird durch thermische Provokation in einer Flamme oder in einem Graphitrohr erreicht.\\[0.3cm]
+
+\textbf{Flamme}\\[0.3cm]
+Besteht aus einem pneumatischen Zerstäuber, eine Mischkammer und ein Brenner. Die Probe wird meist als wässrige Lösung mit einer Rate im 10 mL/min –Bereich angesaugt, der Zerstäuber und das resultierende Aereosol wird mit dem Brenngas gemischt, bevor es in die Flamme eingeführt wird. Die Anregung durch Licht erfolgt nur für freie Atome, deswegen ist die Ionisation unerwünscht. Temperatur der Flamme (Energiezufuhr) lässt sich durch Zusammensetzung der Brenn- und Oxidationsgas wählen. Die Temperatur muss zur Verdampfung und Atomisierung ausreichen aber nicht die Ionisierung bevorzugen oder die Bildung von Doppeloxiden und Phosphaten.\\ 
+$\rightarrow $ Optimierung durch Flammenzusammensetzung und -temperatur
+\begin{itemize}
+\item \emph{Gasgemisch}
+	\begin{itemize}
+	\item  Das Brenn-und Oxidationsgas bestimmt die Temperatur und die Brenngeschwindigkeit der Flamme
+	\item das ideale Gasgemisch ist vom Analyten selbst abhängig
+	\item  Eigenabsorption des Brenngases darf die der Analyten nicht überlagern (Für kurzwellige Elemente wie As, Se sehr wichtig)
+	\end{itemize}
+\item \emph{Temperatur}: Da nur freie Atome spezifische Strahlung absorbieren
+	\begin{itemize}
+	\item Temperatur genug hoch um moleküle zu Dissozieren $\rightarrow$ Atomisierung
+	\item	Temperatur nicht zu hoch um Bildung von Ionen zu vermeiden $\rightarrow$ Ionisierung
+	\end{itemize}
+	\newpage
+\item \emph{Dissozationsgrad}: Molekülverbindungem des Analyten, die wegen unvollständiger Dissoziation oder durch Rekombination vorliegen vermindern die Empfindlichkeit.
+	\begin{itemize}
+	\item stark Temperaturabhängig
+	\item stabile monoxide (z.B. BO) bei Temperaturen > 6000k  $\rightarrow$ Bor mit AAS schlecht bestimmbar
+	\item Bildung von thermisch stabilen Verbindungen kann durch Befreiungsreagenzien unterbunden werden (Bsp. Lanthan zu Mineralwasser: vermeidet Bildung von Calciumphosphate)
+	\end{itemize}
+\item \emph{Ionisierungsgrad}: Elemente mit grossem Ionisierungsgrad $ \gamma=\frac{n_{ion}}{n_{ion} + n_{a}} $ (z.B Na, K, Rb oder Cs) bilden leicht Ionen die die Empfindlichkeit schwächen
+	\begin{itemize}
+	\item Überschuss an leicht Ionisierbaren Elemente (z.B. Cs) vermindert Ionisierung Analyten $ \rightarrow $ "Ionisationspuffer"
+	\end{itemize}	
+\item \emph{Störungen}
+	 \begin{itemize}
+		\item Spektrale Interferenzen: werden durch unspezifischem Untergrund verursacht, z.B. durch Streuprozesse an Teilchen (besonders UV- Bereich) $\rightarrow$ Untergrundkompensation
+		\item Nichtspektrale Interferenzen: werden durch eine Veränderung der Zahl der Analytatome in Absorptionsvolumen bedingt.
+			\begin{itemize}
+			 \item Linienumkehr: aufgrund des Temperaturunterschieds zwischen Mitte und Rand der Flamme, führt zu Abschwächung des Absorptionssignal
+			 \item Krümmung der Kalibrierungskurve: Lambert-Beer'schen-Gesetz ergibt lieare Kalibrationsgerade nur für kleine Konzentrationen\\
+			 $\rightarrow $ Emissinonsprofil verliert an Intensität und Form\\
+			 $\rightarrow $ Funktionen zweiten Grades können die Krümmungen beschreiben\\[0.3cm]
+			 \end{itemize}
+		\end{itemize}
+\end{itemize}
+\newpage
+\textbf{Graphitrohr (GF/ETA)} \\[0.3cm]
+Alternativ zur Flamme kann die Energie auch über einen elektrisch beheizten Graphitofen zugeführt werden. Entweder durch \emph{elektrothermale Verdampfung (ETA) } oder mit dem \emph{Graphitrohr (GF)}. Grapahitrohre bestehen aus pyrolytischem Graphit oder sind mindestens damit beschichtet. Die bedampfung mit Wolfram und/oder Tantal können dessen Lebensdauer verlängern. 
+\begin{itemize}
+\item \emph{Arbeitschritte}
+\begin{enumerate}
+ \item{Probeneinführung: In flüssiger Form (10-30 $\mu$L in HNO$_3$ bis 100 $\mu$L\\
+Eintrag fester Proben und Verwendung eines Autosamples für die Beladung der Probenschiffchen ist möglich.}
+\item{Trocknung 50-120 $^{\circ}C$: Lösungsmittel durch Verdampfung entfernt (T wenig höher als siedepunkt)}
+\item{Verauschung 200-600 $^{\circ}C$: Matrixabtrennung (Analyt muss nicht verloren gehen!)}
+\item{Atomisierung 1500-2000  $^{\circ}C$: schneller Heizvorgang nötig um Analytverluste zu minimieren und möglichst viel Analyt in freier Form in der Gasphase zu haben.}
+\item{Ausheizen 2700-3000 $^{\circ}C$: alles vorher nicht verdampfte aus Graphitrohr entfernen (sonst sinkt die Sensivität und Reproduzierbarkeit der Messungen)}
+\item{Abkühlung: schont Graphitrohr und verlängert seine Lebensdauer}
+\end{enumerate}
+$\rightarrow $ Diese Schritte werden durch programmiertes Aufheizen des Ofens gesteuert
+\item \emph{Störungen}: chemische, spektrale und Ionisationsstörungen können durch Bildung stabiler Verbindungen, absorbierenden Untergrund, Entstehung eines Dissotiationskontinuum oder Streustrahlung verursacht werden. Lichtstreuung ist vor allem bei der ETA-AAS ein Problem\\
+ $\rightarrow$ sorgfältige Untergrundkorrekturen sind nötig.
+ \item \emph{Verdünnungsgrad}
+ Die Dichte des atomaren Dampfes ist über einen für die betreffenden Kombination von Probeneinführungssystem und Atomisierungseinrichtung charakteristischen Verdünnungfaktor(D) mit der Konzentration des Analyten in der Probe verbunden.
+ 	\begin{itemize}
+ 	\item Flammen-AAS: Verdünnungsfaktor $10^5-10^6$
+ 	\item ETA-AAS: Verdünnungsfaktor $10^3$\\
+ 	$ \rightarrow $ Nachweisgrenzen der ETA-AAS typischerweise um einen Faktor 100-1000 niedriger als die Flammen-AAS
+ 	\end{itemize}
+\end{itemize}
+\textbf{Weitere Atomisierungs Techniken}
+\begin{itemize}
+\item \emph{Hydrid-Technik}: für As, Sb, B und Se $\rightarrow$ sehr tiefe Nachwiesgrenzen
+\item \emph{Kaltdampf- und Amagam-Technik}: Hg $\rightarrow$  Nachwiesgrenzen 1 ng/L (für 50 mL Lösung)
+\end{itemize}
+
+
+\subsubsection{Monochromator}
+Der Monochromator besteht aus einem Eintrittsspalt, einem dispersiven optischen System, einem Austrittsspalt und einem Detektor zur Strahlungsmessung. Seine aufgabe ist die trennung der Resonanzlinien von anderen Emissionslinen. \\
+
+\textbf{Auflösungsvermögen (R)}:\\[0.3cm]
+Das Auflösenvermögen hängt von der Dispersion der Gitter ab. 
+\begin{center}
+  $R = \lambda / \Delta \lambda $  
+ \end{center}
+ $\Delta \lambda$ = Wellenlängendifferenz, bei der zwei nebeneindanderliegende Spektrallinien noch getrennt werden können\\
+\begin{itemize}
+\item \emph{Konstruktive Interferenz} :  Nur wenn $ n\lambda = d\cdot(\sin\alpha \pm \sin\beta)$, mit $\alpha$ Einfallwinkel und $\beta$ Ausfallwinkel
+\item \emph{Gitterauflösung}: $ R_{Gitter}=\frac{\lambda}{\Delta \lambda}=nN$ 
+\item \emph{Lineardispersion}: Distanz von zwei 1nm unterschiedliche Wellenlängen auf dem Spektogramm: $ D=\frac{\delta y}{\delta\lambda}=\frac{n \cdot f}{d \cdot cos\beta}$
+\item \emph{effektive spektrale Bandbreite}: $ \Delta \lambda_{eff} = s\cdot\frac{\Delta\lambda}{\Delta y} $ wobei $s$ die Spaltbreite ist\\
+\end{itemize}
+$ \rightarrow $ Gute Trennleistung setzt eine kleine spektrale Bandbreite voraus, die durch kleine Spaltbreiten und eine hohe Dispersion des Monochromators erreicht werden kann. \\
+\textbf{Echelle Spektrometer}\\[0.3cm]
+Für HR-CS-AAS ist eine hohe Auflösung des optischen Systems entscheidend.  Der Echelle-Spektrometer erreicht eine 2D-Wellenlängeauftrennung durch die Einführung eines zweiten dispersiven Elementes.  \\[0.3cm]
+$ \rightarrow $ Ein Kompromiss zwischen dem Wunsch nach möglichst viele Strahlung auf dem Detektor und dem Bedarf nach hoher Selektivität der ausgewählten Wellenlänge muss gefunden werden. \\
+
+\subsubsection{Detektor}
+\textbf{Photomultiplier}
+\begin{itemize}
+\item \emph{Sekundärelektronenvervielfacher SEV}: liefert einen dem einfallenden Photonenstrom proportionalen elektrischen Strom
+\item \emph{Dunkelstrom}: auch wenn keine Strahlung auf den Detektor fällt werden wenige Elektronen thermisch freigesetzt, dies begrenzt die Nachweisgrenze\\
+$ \rightarrow $ Höhere Nachweisgrenze durch Detektorkühlung\\
+\end{itemize}
+\newpage
+\textbf{Halbleiterdetektor}\\[0.3cm]
+Lichtempfindliche Halbleiterdetektoren können mehrere Wellenlängen simultan detektieren.\\
+$ \rightarrow $ Simultanspektrometer
+
+
+
+
+\subsection{Untergrundkompensation}
+\subsubsection{Untergrundkompensation mit Kontinuumstrahler}
+Zur Kompensation des Untergrundes enthält die HKL (Hohlkathodenlampe) eine Deuteriumlampe als zweite Strahlungsquelle.Durch abwechselndes Strahlen gelangt wird von der Deuteriumlampe das ganze Emissionsspektrum abgedeckt. Die HKL Strahlungsleistung wird durch spezifische sowie unspezifische Absorption verursacht. Hingegen wird die Deuteriumlampe nur von Streustrahlung oder Molekülabsorption geschwächt. \\
+$ \rightarrow $ der Faktor $\phi_{DL}$ wird als Korrektur der HKL-Strahlung benutzt\\
+\emph{Wichtig}
+\begin{itemize}
+\item unspezifische Absorption muss konstant sein
+\item beide Strahlengänge müssen den gleichen Bereich der Atomisierung durchstrahlen
+\end{itemize}
+
+\subsubsection{Untergrundkompensation mit gepulster HKL}
+In dieser Methode benutzt die Linienumkehr durch Selbstabsorption bei hohem Lampenstrom der HKL. Das Emissionsprofil erfährt nur unspezifische Lichtverluste.\\
+$ \rightarrow $ Extinktion kann von der bei normalen Strom abgezogen werden
+\emph{Wichtig}
+\begin{itemize}
+\item verringerung der Lebensdauer der HKL
+\item nur bei konstanter, nicht strukturierter Untergrundabsorption verwendbar
+\end{itemize}
+
+\subsubsection{Untergrundkompensation unter Ausnutzung des Zeeman-Effekts}
+Der Zeemann-Effekt bezeichnet man die Aufspaltung der Energieniveaus der Atome im Magnetfeld. Wird ein rotierender polarisator in den Strahlengang der HKL gebracht, wird abwechselnd parallell und senkrecht polarisiertes Licht in die Atomisierungsrichtung geschickt. Das senkrecht polarisierte Licht wird allein durch unspezifische Absorption Abgeschwächt.\\
+$ \rightarrow $ Die Extinktion der senkrecht polarisierten Strahlung lässt sich von der parallell polarisierten abziehen.\\
+\emph{Wichtig}
+\begin{itemize}
+\item Untergrund wird direkt aus der interessierten Wellenlänge erfasst
+\item auch strukturierte Untergründe werden einbezogen
+\item Gut für Analysen in komplexen Matrices, insbesondere für biologische Proben
+\end{itemize}
+
+
+%%%%% OPTISCHE EMISSIONS SPEKTROMETRIE (ICP-OES) %%%%%%%%
+
+\section{Optische Emission Spektrometrie (ICP-OES)}
+\begin{figure}[h]
+\begin{tikzpicture}
+  [node distance=.8cm,
+  start chain=going right,
+  comment/.style={rectangle, inner sep= 5pt, text width=4cm, node distance=0.25cm, font=\footnotesize}]
+     \node[punktchain, join] (Provokation){Provokation};
+     \node[punktchain, join] (Reaktion) {Reaktion};
+     \node[punktchain, join] (Detektion) {Detektion};
+     %%%
+     \node[comment, below= of Provokation] {Thermische anregung durch das Plasma};
+     \node[comment, below= of Reaktion] {Verdampfung, Atomisierung, Anregung und teilweise Ionisierung der Probe, Relaxation angeregter Zustände uner Emission elektromagnetischer Strahlung};
+     \node[comment, below= of Detektion] {Messung der Intensität der emittierten Strahlung auf elementspezifischer Wellenlänge};    
+\end{tikzpicture}	
+\caption{Grundschema der ICP-OES}
+\end{figure}
+Das Prinzip der Atomemission hat sich bis heute bewährt. Der Erfolgt basiert auf der Möglichkeit zur gleichzeitigen, mehrfachen Elementbestimmung, den grossen messbaren Konzentrationsbereich, den niedrigen Nachweisgrenzen und der hohen Automatisierbarkeit der Methode.  Um Energiezustandsänderungen durch Elektronen in der äusseren Elektronenhülle der Atome zu registreiren, müssen alle chemische Bindungen aufgebrochen werden und ein signifikanter Antel der Atome aus dem Grundzustand in angeregte atomare Zustände gebracht werden. IM ICP-OES erfolgt die Atomisierung und Anregung mit einem \textbf{Induktiv Gekoppeltem Plasma (ICP – OES)} als Ionenquelle (besonders Argon-Plasma), was sie zu einem zerstörenden Analyseverfahren macht. Das   \textbf{MIP (Mikrowelle induzierte Plasma)} eignet sich nur für trockene Aereosole oder Gas (als Detektor in Gaschromatographie).
+
+\subsection{Plasma}
+Das Plasma ist ein angeregtes, teilweise ionisiertes und nach Aussen neutrales Gas (4. Aggregatzustand der Materie).  Jedes Plasma wird durch die Art un die jeweilige Temperatur und Dichte der geladenen Teilchen charakterisiert. Das für OES erzeugte Plasma arbeitet bei T > 1000 $^{\circ}$C, $\rho = 10^{18}$ Teilchen/m$^3$. Elektronen sind so weit beschleunigt, dass sie Bewegungsenergie übertragen und so Atomisierung und Anregung bis zur Ionisierung bewirken. 
+
+\newpage
+\subsection{Aufbau}
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.8]{Komponenten_ICPOES}
+\caption{Darstellung der Komponenten eines ICP OES}
+\label{ICPOES}
+\end{figure}
+
+Die Hauptbestandteile des ICP-OES sind:
+\begin{itemize}
+\item \emph{Fackel(Torch)}: zur generierung des induktiv gekoppelten Plasma
+\item \emph{Probenzuführungssystem}: das genügend feines Aerosol oder Gas produziert\\
+\item \emph{Spektrometer und Detektor}
+\end{itemize}
+
+\subsubsection{Probenzuführungssysteme}
+Das Probenzuführungssystem hat die Aufgabe, die Analyten bei mölichst kleinem Verdünnungsfaktor aus der Probe(nlösung) reproduzierbar der Atomisierungseinheit zuzuführen. Die Probe kann flüssig, fest, oder gasförmig sein. Wichtig ist, dass die Energie ausreicht um die Probe zu atomisieren. Aus festen Proben werden kleine Partikel sowohl durch Funken- als auch Laser Ablation erzeugt. Am häufigsten werden jedoch Proben in Lösung verwendet.\\[0.5cm]
+
+\begin{description}
+\item[A.] \textbf{Flüssige Proben}\\[0.3cm]
+Nur der verdampfte Teil einer Probe kann nach Anregung zum analytischen Signal beitragen.Ein Zerstäuber vernebelt die Probe, die dann durch einer Sprühkammer geht, welche Tröpfchen $>15\mu m$ nicht durchlässt. Nur Teilchen \textbf{ $< 15 \mu m$} werden in Plasma übergehen, nur \~1\% der vernebelten Probe geht in ICP (10 mal kleiner als Flamme AAS) bei Pneumatischer Vernebelung (Ultraschall auch möglich).\\
+ Die Wahl des Zerstäubersystem aus Zerstäuber und Sprühkammer muss für jede Probe individuell getroffen werden, wichitg dabei ist:
+\begin{itemize}
+\item \emph{stabilität} der Aerosolausbeute
+\item \emph{Grössenverteilung} der Tröpfchen
+\item \emph{Zerstäubungseffizienz}
+\item \emph{Transportausbeute}
+\item \emph{Auswaschzeit}\\
+\end{itemize}
+
+Der \emph{Memoryeffekt} ist die erhöhunge der intensität durch Kontamination (z.B bei B oder Pb). Dieser lässt sich durch längere Auswaschzeiten oder Spülen mit verdünnten Mineralsäuren verringern.\\
+
+
+\begin{itemize}
+\item \textbf{Pneumatische Zerstäuber}
+	\begin{itemize}
+	\item \emph{Konzentrische Zerstäuber}
+		\begin{itemize}
+		\item Einfühurung der Probenflüssigkeit durch Kapillere unter tiefen Druck
+		\item Konzentrischer Meinhart zerstäuber\\
+		$ \rightarrow $ aus Glas oder Quartz\\
+		$ \rightarrow $ nur Proben mit geringer Matrixbelastung (1\% Salz)\\
+		$ \rightarrow $ hohe Zertäubereffizienz, gute NWG
+		\end{itemize}
+			
+	\item \emph{Cross-Plau-/Knierohrzersäuber}
+			\begin{itemize}
+			\item Injektionsgas fliesst senkrecht über Probenkapillare
+			\item austauschbare Düsen $ \rightarrow $ geringe verstopfungsgefahr
+			\item Für viele verschiedene Matrizen geeignet  (z.B. Umweltproben)
+			\item meistens über selbstsaugende Systeme
+			\end{itemize}			
+	\item\emph{V-Spalt Zerstäuber}: 
+			\begin{itemize}
+			\item Hohe Matrixbelastungen (Salzgehalt) bis hin zu visköse Flüssigkeiten
+			\item für kleine Partikeln, wenn aus Teflon schlechte Wiederholbarkeit .
+			\item einsatz für Zyklonkammer
+			\end{itemize}
+	\item \emph{Sharp (BemCone) Zerstäuber}: 
+			\begin{itemize}
+			\item Hohe Matrixanteile
+			\item kleine Partikel
+			\item beste Wiederholbarkeit mit höheren Pumprate
+			\item einsatz für Zyklonkammer
+			\end{itemize}
+	\item \emph{Burgener Zerstäuber}
+			\begin{itemize}
+			\item Hohe Matrixanteile
+			\item kleine Partikel
+			\item in Kombination mit Zyflonenkammer
+			\end{itemize}	
+	\item \emph{Mikrokonzentrische- /Direkteintrag-Zerstäuber}: 
+			\begin{itemize}
+			\item Messung kleiner Probenmenge mit hoher Effizienz (20-50\%) (Sprühkammer nicht gebraucht). 
+			\item Oft gekoppelt zu Flussigkeitschromatographen oder ICP-MS
+			\end{itemize}	
+	\end{itemize}
+	
+\item \textbf{Ultraschallzerstäuber}\\
+ Die Probe liegt auf einer vibrierenden Quarzplatte (Piezoelektrischer Kristall).
+	\begin{itemize} 
+	\item \begin{itemize}
+		\item Höhe Zerstäubungseffizienz (50\%)
+		\item Grössere Partikel möglich
+		\item sehr lange Auswaschzeiten
+		\end{itemize}
+	\end{itemize}
+
+\item \textbf{Sprühkammern}\\
+Dem Gasstrom, der die Flüssigkeitstropfen trägt, wird eine scharfe Richtungsänderung aufgezwungen, die die grösseren, trägeren Tröpfchen nicht nachvollziehen können (so werden sie entfernt). Materialien wie Glass oder Quarz zeigen bessere NWG und bessere Auswaschzeiten, der Nachteil ist aber die Unbeständigkeit gegenüber Flusssäuren. Deswegen wurde geeignete Kunststoffe Hergestellt (Ryton, PEEK, PTFE, PFA).
+	\begin{itemize}
+	\item \emph{Scott-kammern}
+		\begin{itemize}
+		\item Bessere Dämpfung
+		\item längere Ausmachzeiten.
+		\end{itemize}
+	\item \emph{Zyklon-Kammern}
+		\begin{itemize}
+		\item Kürzeren Ausmachtzeiten $\rightarrow$ höhere Aerosolausbeute
+		\item weniger gut gedämpf $\rightarrow$  weniger stabil
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+
+\item[B.]  \textbf{Feste Proben}\\[0.3cm]
+Aufschlusses fällt weg $ \rightarrow$ weniger Kontaminationsrisiko.
+Feste Proben lassen sich entweder als Slurry oder durch Funken oder Laser Ablation ins Plasma befördern. 
+\begin{itemize}
+\item{\emph{Slurry}: Suspension kleiner Partikel (Pulver oder durch Mahlen zerkleinert) in Lösung. Probeneintrag wie V-Groove oder Ultraschallzerstäuber}
+\item{\emph{Funken-Ablation (Bogen-)}: nur für leitende Probenmaterialien. Probe wird durch ein elektrisches Potential erosiert. Die Temperatur ist so hoch, dass di Probe direkt Atomisiert und normalerweise bei Analyse Oberflächenschichten bildet.}
+\item{\emph{Laser-Ablation}: Photonen erzeugen Atome, Ionen und Partikeln in der Probe wird selten benutzt. Mehr für ICO-MS, LMMS (Laser miscroprobe MS) oder RIMS (Resonance Ionisation MS)\\[0.5cm]}
+\end{itemize}
+
+\newpage
+\item[C.]  \textbf{Gasförmige Proben}
+	\begin{itemize}
+	\item Hydrid Technik
+	\item Hg-Dampf\\[0.5cm]
+	\end{itemize}
+\end{description}
+
+
+
+\subsubsection{Anregungseinheit: Das Plasma}
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.8]{Fackel_ICPOES}
+\caption{Fackel eines ICP}
+\label{Fackel}
+\end{figure}
+
+\begin{itemize}
+\item \textbf{Das Plasma} wird in der Fackel(torch) mit Hilfe eines RF-Generators erzeugt (Generatorleistungs 1-2 kW). Das bevorzugte Plasma ist mittlerweile ein Argonplasma, hauptsächlich aus Kostengründen aber auch wegen dessen hohe un efiiziente Ionisierungsenergie, häufigkeit in der Natur, Abwesenheit von rotationsschwingungen und dessen grosse Atommasse
+\item \textbf{Die Fackel} meistens aus hochreinem Quarz, besteht aus 3 Konzentrischen Röhren mit unterschiedlichen Zwecken
+\begin{itemize}
+\item{\emph{Injektrohr}: Dort wird Injektrohrgasstrom von 1L/min ins Plasma transportiert. T = 5000-8000K. Auch aus Al\textsubscript{2}O\textsubscript{3} oder Platin erhältlich}
+\item{\emph{Mittlere Quarzrohr}: Plasmagasstrom (unterhält eigentliche Plasma)}
+\item{\emph{Äussere Zone}: Kühlgasstrom (zum Abkühlen des ganzes Systems)}
+\end{itemize}
+
+\item \textbf{Zündung des Plasma}:
+Die Fackel wird mit einem Hochspannungsfunken gezündet und induziert die Bildung  von primärer Argonionen-Elektronen-Paare. Die Beschleunigung der Elektronen durch das Wechselfeld verursacht Kollisionen die  weitere Argonionen bilden. 1\% des Argons im Plasmagas liegt ionisiert vor. Etwas oberhalb der Kupferspule bildet sich eine örtlich begrenzte, stabile Plasmafackel aus (Induktionsregion)
+
+\item \textbf{„Skin Effekt“}:
+Die Selbstinduktion an der Oberfläche des Leitenden Plasma führt zu einem Torus-Form und damit zu einer elektrischen Unterstützung des Aerosolkanals, und hohe gaskinetische Temperaturen von 5000 - 7000 K . Das erlaubt eine effiziente Energieübertragung  von der Plasmafackel auf die Probe. Das macht die gute Eignung des ICP als Atomiseur,  Ionisierungs- und Anregungseinrichtung aus. Ausserdem hat die Probe hat kein Kontakt nach aussen.\\
+\emph{Vorteil}: Kaum Selbstabsorption $\rightarrow$ vereinfacht Untergrundkorrektur \\
+\end{itemize}
+
+\textbf{Plasmaprozesse}
+\begin{itemize}
+\item \emph{Atomisierung}
+	\begin{itemize}
+	\item Provokation mittels thermische Energie
+	\item Verdampfen des Lösungsmittel
+	\item Erzeugung freier Atome und Ionen im Gaszustand $ \rightarrow $ weitere Anregung bis Ionisation
+	\item Relaxation der angeregte Zustände $ \rightarrow $  Emission elektromagnetischer Strahlung
+	\item Energieunterschied zwischen Energieniveaus: $ \Delta E=\frac{h \cdot c}{\lambda} $
+	\item Grosse Anzahl möglicher Übergänge  $ \rightarrow $ Linienvielfalt
+	\item Wellenlängenbereich: 150 bis 800 nm
+	\end{itemize}
+\item \emph{Anregung}
+	\begin{itemize}
+	\item Leistung einer Emmissionslinie $\propto$ Teilchendichte $n$
+	\item angeregte Teilchendichte Temperatur abhängig \\
+	$ \rightarrow $ Boltzmannverteilung\\
+	$ \rightarrow $ hohe Temperatur für grosse Population nötig
+	\end{itemize}
+\item \emph{Ionisierung}
+	\begin{itemize}
+	\item höheren Aggregatzustand und hohe Temperatur $ \rightarrow $ starke Ionisierung Analytatome
+	\item Ionisierungsgrad: $ \gamma = \frac{n_{ion}}{n_{at} + n_{ion}}=\frac{1}{1+\frac{n_e}{K_i}} $
+	\item Hohe Elektronendichte durch ionisiertes Ar-Plasma
+	\end{itemize}
+\end{itemize}
+
+\newpage
+\textbf{Plasmatemperatur}\\[0.3cm]
+Die Temperatur ist im ICP-OES ein determinierender Parameter um effiziente Atomisierung und Anregung durchzuführen. Im ICP herrscht kene gleichmässige Temperatur, je nach spektrometrischer Beobachtungsmethode wird eine Anregungs- (T\textsubscript{exc}), Ionisations- (\textsubscript{ion} oder Elektronentemperatur (\textsubscript{e})bestimmte. Im Allgemeinen gilt:
+\begin{itemize}
+\item $ T_{exc} < T_{ion} < T_e $
+\item $T_e \approx $ 7000 K
+\item Temperaturunterschiede führen zu Plasmazonen\\
+\end{itemize}
+
+\textbf{Plasmazonen}\\[0.3cm]
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.6]{Plasmazonen_ICPOES}
+\caption{Plasmazonen eines ICP}
+\label{Plasmazonen}
+\end{figure}
+Normtemperatur ist diejenige bei der eine Emissionlinie ihre maximale Intensität aufweist.\\
+
+\begin{itemize}
+\item \emph{Plasmakern}: liefert Energie (T $ \approx $ 10'000 K)
+\item \emph{Vorhheizzone}: Verdampfung der Flüssigkeit $\rightarrow$ freie Atome 
+\item \emph{erste Anregungszone}: anregung freier Atome ( T $ \approx $ 6300 K)
+\item \emph{Normale Analytische Zone (NAZ)}: vorwiegend Ionen (T $ \approx $ 6500 - 7100 K)
+\item \emph{Nachschweife}: Rekombination von Atomen und Ionen\\
+\end{itemize}
+Die Plasmazonen sind durch Gasfluss und RF Power beeinflussbar:\\
+$ \uparrow $ Leistung $\Rightarrow $ $ \uparrow $ Plasmatemperatur\\
+$ \uparrow $ Strömungsgeschw. Gas $\Rightarrow $  verschiebung Plasmazonen nach Vorne\\
+
+
+%Während der Messung von Referenzproben und Messproben erfolgt im besten Fall keine Veränderung des Ionisierungsgrades, was Grundvoraussetzung für ihre Vergleichbarkeit und damit für Funktionen einer Analyse ist (Erlaubt bei sehr hoher Elektronendichte ($10^{14}-10^{16} e^{-}/cm^3$ von Ar)\\
+
+
+
+
+\subsubsection{Das Optisches System}
+Die Strahlung muss nach Wellenlängen aufgetrennt werden. \\
+Das Optische System kann entweder radial oder axial ausgerichtet sein.
+
+\begin{itemize}
+\item \emph{Radial}:meist ca 15 mm über der Spulenoberkante. Da nur ein Ausschnitt des Emissionsspektrums erfasst wird, wird der Einfluss von Interferenzen verringert jedoch auch die Empfindlichkeit
+\item \emph{Axial}: 10 mal Niedriger NULG? Werden erreicht, gleichzeitig unterliegt die Signalmessung jedoch auch mehr Störungen.
+Ein Interface (wassergekühlt) lässt nur die Strahlung zur Optik gelangen (Nicht hohe ???)
+\end{itemize}
+
+Das Wellenlängendispersive System:\\
+Die Spektrale Begrenzung des Lichts erfolgt nach Begrenzung des einfallenden Lichtes durch einen Eintrittsspalt an Gittern oder Prismen, oder eine Kombination von beiden. Es Wird Zwischen sequentiellen und simultanen Spektrometern unterschieden.
+\begin{itemize}
+\item \emph{Sequentiell}: Die jeweilige Wellenlänge wird durch Drehen eines optischen Gitters Ausgewahlt und mit Hilfe von Spiegeln zu einem einzigen Ausgangsspalt und dem dahinter liegenden Detektor geleitet.\\
+Czerny-Turner-Anordnung: Monochromator – Eintrittsspalt – Kollimator – Drehbaren – optisches Gitter fokussierenden Spiegel (?) – Austrittsspalt. \\
+Vorteil: Kompakt, kann auch in der Nähe der Emissionslinie Signale gut aufnehmen, damit lassen sich mögliche Interferenzen erkennen. 
+Nachteil: „Lange“ Zeiten nötig, was die Reproduzierbarkeit der Ergebnisse limitiert (und instabile Teilchen werden schwieriger detektiert).
+\item \emph{Simultan}: mit einem Polychromator. Für jede Emissionslinie muss ein einzelner Detektor vorhanden sein, was die Anzahl der messbaren Linien durch den Platz einschränkt. (Anwendung von Halbleiterdetektoren und Echelle-Aufbau)\\
+Poschen-Runge-Anordnung: Spektrale Zerlegung der Strahlung erfolgt an einem konkaven Beugungsgitter. Licht wird von einem fixierten optischen Gitter auf einen sogenannten Rouland-Kreis fokussiert. Auf diesem liegen die Sekundärspalten mit ihren zugehörigen Detektoren an der berechneten Position der ausgewählten Emission.\\
+$\lambda < 200 nm $ können nur im „Vakuumspektrometer“ gemessen werden.\\
+Echelle Aufbau: sehr hohe Auflösung. Zerlegung erfolgt entweder mit Prisma nach $\lambda$ oder mit Echelle-Gitter nach Beugunsordnung.
+Die Auflösung in 2D bei gleichzeitiger Untergrundmessung in Kombination mit der simultanen Datenerfassung machen die Systeme mit Echell-Optik zu sehr hochauflösenden und gleichzeitig sensitiven Spektrometer.
+\end{itemize}
+
+%Detektion
+%Gebraucht: Schnelle Aufnahme von Signale und Verarbeitung, hohe Empfindlichkeit haben und grossen linear dynamischen Bereich aufweisen.
+\begin{itemize}
+\item \emph{Photomultipler}: gute Langzeitstabilität, hohe Empfindlichkeit bei niedrigem Dunkelstrom und weitgehend lineares Verhalten bei Intensitätsunterschieden bis zu einem Faktor 10$^6$ 
+\item \emph{Halbleiterdetektoren}: bestehen aus Lichtempfindlichen Halbleitermaterialien. \\
+Hohe Quantenausbeute und Lichtempfindlichkeit bei relativ geringen Dunkelstrom (CCT: Charge-Transfer-Devices)
+\begin{itemize}
+\item CID (Charge-Injection-Device): misst wiederholt und mittelt die Ladung, die durch eine Kombination von Zeilen und Spalten adressiert werden (cps = Counts per Second). Gut für Zeitaufgelöste signale, $167 nm < \lambda < 800 nm $ (gesamter nutzbaren Bereich)
+\item CCD (Charge-Coupled-Device): Die Ladungen wandern in Zeiten zur Ausselektion? (SCD:  segmentierten CCD existiert auch als variante) 
+\end{itemize}
+\end{itemize}
+
+
+
+\subsection{Messen mit ICP-OES}
+
+\begin{itemize}
+\item{Auflösung: $ R = \frac{d\lambda}{d y}\cdot \frac{w_1+w_2}{2} = ? $ (Halbwertsbreite)}
+\item{Nachweisstärke:\\
+Nachweisgrenze (statistische Grösse) gibt an, ab welchem Wert ein Analytsignal von Untergrundrauschen unterscheidbar ist. \\
+BEC (Untergrundäquivalenzgehalt) = $\frac{I_{bg}}{I_{netto}}c_A$ 
+Ist eine Besonderheit der ICP-OES. \\
+SBR: signal/Untergrund Verhältnis. \\
+NWG = $t \cdot$ RSD$\cdot$ BEC}
+\item{Linienauswahl: Kriterien für die Wahl der Linie: 
+Linienbreite, Linienabstand, Intensitätverhältnisse  }
+\item{Störungen:
+\begin{itemize}
+\item{Untergrundspektrum: Erfassen und Abzug des Spektrums der Blindwertlösung von der Probe. Untergrund besteht aus Emission der Plasma und Lösungsmittel}
+\item{Matrix-Einfluss: spektrale Störungen sind additiv auf der Analysenlinie und bewirken eine Verschiebung der Kalibrationsgerade; Nicht-spektrale Störungen wirken multiplikativ, d.h. sie ändern die Steigung der Kalibrationsgeraden.}
+\item{Instrumentelle Störungen: Temperatur oder Druckunterschiede können die Kalibrationsgeradensteigung verursachen (bei aufeinanderfolgenden Messungen) }
+\end{itemize}
+Korrektur:
+\begin{itemize} 
+\item{Spektrale Störung: 
+\begin{itemize}
+\item{durch multivariater Regression $ \rightarrow$ bessere Präzision und niedrigere Nachweisgrenze}
+\item{Inter-Elementkorrektur (IEK): Intensitätsverhältnis der ungestörten und der sonst überlagerten Linien wird bestimmt. Damit wird der Anteil des Interferenten zur Analyselinie bestimmt}
+\end{itemize}
+Nichtspektrale Störung: 
+\begin{itemize}
+\item{Matrixanpassung}
+\item{Wiederfindungsrate(sukzessives Verdünnen oder Aufstocken der Probe)}
+\item{Vergleich mit Referenzprobe (Wenn es keine spektrale Störung gibt)}
+\item{Ionisationspuffer (aber hohes Kontaminationsrisiko)}
+\end{itemize}
+$\rightarrow$ Direkt in der Probe oder durch ihre Auswirkungen ergeben werden}
+\end{itemize}}
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
